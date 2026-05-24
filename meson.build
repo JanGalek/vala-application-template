@@ -1,55 +1,34 @@
-project('io.github.yourusername.yourrepositoryname', 'vala', 'c',
+project('io.github.JanGalek.vala-application-template', 'vala', 'c',
     version: '0.1.0',
     meson_version: '>= 1.0.0'
 )
 
+reponame = meson.project_name().split('.')[3].to_lower()
+
 # Include the translations module
 i18n = import('i18n')
+gnome = import('gnome')
+valac = meson.get_compiler('vala')
 
 # Set our translation domain
 add_global_arguments('-DGETTEXT_PACKAGE="@0@"'.format (meson.project_name()), language:'c')
 
-#Translate and install our .desktop file
-i18n.merge_file(
-    input: 'hello-again.desktop.in',
-    output: meson.project_name() + '.desktop',
-    po_dir: meson.project_source_root() / 'po',
-    type: 'desktop',
-    install: true,
-    install_dir: get_option('datadir') / 'applications'
-)
 
-#Translate and install our .metainfo file
-i18n.merge_file(
-    input: 'hello-again.metainfo.xml.in',
-    output: meson.project_name() + '.metainfo.xml',
-    po_dir: meson.project_source_root() / 'po',
-    install: true,
-    install_dir: get_option('datadir') / 'metainfo'
-)
+dependency('gtk4')
+
 
 # Create a new executable, list the files we want to compile, list the dependencies we need, and install
 executable(
-    meson.project_name(),
+    reponame,
     'src' / 'Application.vala',
     dependencies: [
-        dependency('gtk4')
+        dependency('gtk4'),
+        dependency('glib-2.0'),
+        dependency('libadwaita-1', version: '>= 1.6'),
     ],
+    vala_args: ['--pkg', 'libadwaita-1'],
     install: true
 )
-
-# Install our .desktop file so the Applications Menu will see it
-#install_data(
-#    'data' / 'hello-again.desktop',
-#    install_dir: get_option('datadir') / 'applications',
-#)
-
-# Install our .metainfo.xml file so AppCenter will see it
-#install_data(
-#    'data' / 'hello-again.metainfo.xml',
-#    install_dir: get_option('datadir') / 'metainfo',
-#    rename: meson.project_name() + '.metainfo.xml'
-#)
 
 subdir('data')
 subdir('po')
