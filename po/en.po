@@ -14,6 +14,6 @@ msgid ""
 "couple sentences per paragraph is best"
 msgstr ""
 
-#: src/Application.vala:17
+#: src/widgets/Application.vala:18
 msgid "Hello World"
 msgstr ""

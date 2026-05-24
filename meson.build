@@ -10,25 +10,25 @@ i18n = import('i18n')
 gnome = import('gnome')
 valac = meson.get_compiler('vala')
 
+src_dir = meson.project_source_root() / 'src'
+
+config_h = configuration_data()
+config_h.set_quoted('APP_NAME', reponame)
+config_h.set_quoted('APP_ID', meson.project_name())
+config_h.set_quoted('APP_VERSION', meson.project_version())
+config_h.set_quoted('LOCALE_DIR', join_paths (get_option('prefix'), get_option('localedir')))
+configure_file(output : 'config.h', configuration : config_h)
+
+config_dep = valac.find_library ('config', dirs: src_dir)
+config_inc = include_directories('.')
+
+vapi_dir = join_paths(meson.project_source_root(), 'vapi')
+add_project_arguments(['--vapidir', vapi_dir], language : 'vala')
+
 # Set our translation domain
 add_global_arguments('-DGETTEXT_PACKAGE="@0@"'.format (meson.project_name()), language:'c')
 
 
-dependency('gtk4')
-
-
-# Create a new executable, list the files we want to compile, list the dependencies we need, and install
-executable(
-    reponame,
-    'src' / 'Application.vala',
-    dependencies: [
-        dependency('gtk4'),
-        dependency('glib-2.0'),
-        dependency('libadwaita-1', version: '>= 1.6'),
-    ],
-    vala_args: ['--pkg', 'libadwaita-1'],
-    install: true
-)
-
+subdir('src')
 subdir('data')
 subdir('po')

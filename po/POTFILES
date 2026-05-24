@@ -1,3 +1,4 @@
 data/vala-application-template.desktop.in
 data/vala-application-template.metainfo.xml.in
-src/Application.vala
+src/main.vala
+src/widgets/Application.vala

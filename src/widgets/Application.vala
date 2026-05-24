@@ -1,8 +1,9 @@
 namespace App { 
-    public class MyApp : Adw.Application {
-        public MyApp () {
+    public class Application : Adw.Application {
+
+        public Application () {
             Object (
-                application_id: "io.github.JanGalek.vala-application-template",
+                application_id: Config.APP_ID,
                 flags: ApplicationFlags.DEFAULT_FLAGS
             );
         }
@@ -17,10 +18,6 @@ namespace App {
                 title = _ ("Hello World")
             };
             main_window.present ();
-        }
-
-        public static int main (string[] args) {
-            return new MyApp ().run (args);
         }
     }
 }

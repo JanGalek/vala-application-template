@@ -13,7 +13,7 @@ translations:
 
 run: 
 	cd build && ninja
-	./build/$$(grep -oP "project\('\K[^']+" meson.build | tr '[:upper:]' '[:lower:]' | awk -F. '{print $$NF}')
+	./build/src/$$(grep -oP "project\('\K[^']+" meson.build | tr '[:upper:]' '[:lower:]' | awk -F. '{print $$NF}')
 
 build-run: clean build translations run
 
